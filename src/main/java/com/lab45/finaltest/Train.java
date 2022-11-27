@@ -15,18 +15,27 @@ public class Train {
     private Integer path;
     private Integer day;
     private Date startTime;
+    private Integer totalPassenger;
 
     private PathQueue pathQueue;
+    private CoachQueue coachQueue;
+    private PassengerStack stack;
 
     public Train(Integer path, Integer day, Date startTime) {
         this.path = path;
         this.day = day;
         this.startTime = startTime;
         this.pathQueue = new PathQueue();
+        this.stack = new PassengerStack();
+        this.coachQueue = new CoachQueue();
     }
 
     public void start() {
 
+        this.totalPassenger = 0;
+        
+        this.connectCoach();
+        
         if (this.path.equals(Constants.PATH_CARTAGO_SAN_JOSE)) {
             this.setPathCartagoSanJose();
         }
@@ -34,45 +43,52 @@ public class Train {
             this.setPathSanJoseCartago();
         }
         
-        StationNode temp = pathQueue.front();
+        StationNode stationTemp = pathQueue.front();
         
-        while (temp != null){
+        while (stationTemp != null){
             
-            System.out.println("Nombre Estación: " + temp.getInfo().getName());
+            System.out.println("Nombre Estación: " + stationTemp.getInfo().getName());
             
-            temp = temp.getLink();            
+            CoachNode coachTemp = this.coachQueue.front();
+            
+            stationTemp = stationTemp.getLink();            
         }   
+    }
+    
+    private void connectCoach(){
+        for (Integer coachIndex = 1; coachIndex <= Constants.COACH_BY_TRAIN; coachIndex++){
+            CoachNode coach = new CoachNode();
+            this.coachQueue.enqueue(coach);
+        }
     }
     
      private void passengerGetOn() {
 
-        Integer quantityChildren = (int) Math.random() * 90;
-        Integer quantityRegular = (int) Math.random() * 90;
-        Integer quantityCitizen = (int) Math.random() * 90;
-        Integer quantityYoung = (int) Math.random() * 90;
-
-        PassengerStack stack = new PassengerStack();
+        Integer quantityChildren = (int) (Math.random() * 90);
+        Integer quantityRegular = (int) (Math.random() * 90);
+        Integer quantityCitizen = (int) (Math.random() * 90);
+        Integer quantityYoung = (int) (Math.random() * 90);
 
         for (Integer quantity = 0; quantity < quantityChildren; quantity++) {
-            Integer age = Constants.CHILDREN_MIN_AGE + ((int) Math.random() * Constants.CHILDREN_MAX_AGE);
+            Integer age = Constants.CHILDREN_MIN_AGE + (int) (Math.random() * (Constants.CHILDREN_MAX_AGE - Constants.CHILDREN_MIN_AGE));
             PassengerNode passeger = new PassengerNode(age, this.path);
             stack.push(passeger);
         }
 
         for (Integer quantity = 0; quantity < quantityRegular; quantity++) {
-            Integer age = Constants.REGULAR_MIN_AGE + ((int) Math.random() * Constants.REGULAR_MAX_AGE);
+            Integer age = Constants.REGULAR_MIN_AGE + (int) (Math.random() * (Constants.REGULAR_MAX_AGE - Constants.REGULAR_MIN_AGE));
             PassengerNode passeger = new PassengerNode(age, this.path);
             stack.push(passeger);
         }
 
         for (Integer quantity = 0; quantity < quantityCitizen; quantity++) {
-            Integer age = Constants.CITIZEN_MIN_AGE + ((int) Math.random() * 110);
+            Integer age = Constants.CITIZEN_MIN_AGE + (int)(Math.random() * (Constants.CITIZEN_MIN_AGE - 110));
             PassengerNode passeger = new PassengerNode(age, this.path);
             stack.push(passeger);
         }
 
         for (Integer quantity = 0; quantity < quantityYoung; quantity++) {
-            Integer age = Constants.YOUNG_MIN_AGE + ((int) Math.random() * Constants.YOUNG_MAX_AGE);
+            Integer age = Constants.YOUNG_MIN_AGE + (int)(Math.random() * (Constants.YOUNG_MAX_AGE - Constants.YOUNG_MIN_AGE));
             PassengerNode passeger = new PassengerNode(age, this.path);
             stack.push(passeger);
         }
