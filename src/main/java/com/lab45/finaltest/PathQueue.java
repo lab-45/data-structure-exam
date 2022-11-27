@@ -8,13 +8,13 @@ package com.lab45.finaltest;
  *
  * @author alvar
  */
-public class StationQueue {
+public class PathQueue {
     
     private StationNode front;
     private StationNode rear;
     private Integer nodes;
     
-    public StationQueue(){
+    public PathQueue(){
         this.front = null;
         this.rear = null;
         this.nodes = 0;
@@ -35,5 +35,9 @@ public class StationQueue {
         }
         
         this.nodes++;
+    }
+    
+    public StationNode front(){
+        return this.front;
     }
 }

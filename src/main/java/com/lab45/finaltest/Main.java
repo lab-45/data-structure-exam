@@ -5,6 +5,8 @@
 
 package com.lab45.finaltest;
 
+import java.util.Date;
+
 /**
  *
  * @author alvar
@@ -37,6 +39,17 @@ public class Main {
             System.out.println("Edad: " + temp.getInfo().getAge() +"  " + "Costo Tiquete: " + temp.getInfo().getTicketCost() +"  " + "Tipo: " + (temp.getInfo().getPath() == Constants.PATH_SAN_JOSE_CARTAGO? "San Jose - Cartago":"Cartago - San José") );
             
             temp = temp.getLink();            
-        }   
+        } 
+        
+         System.out.println("--------------");
+        System.out.println("Cartago - San José");
+        Train trainCartagoSanJose = new Train(Constants.PATH_CARTAGO_SAN_JOSE, 1, new Date());
+        trainCartagoSanJose.start();
+        
+        System.out.println("--------------");
+        System.out.println("San José - Cartago");
+        
+        Train trainSanJoseCartago = new Train(Constants.PATH_SAN_JOSE_CARTAGO, 2, new Date());
+        trainSanJoseCartago.start();
     }
 }
