@@ -55,6 +55,8 @@ public class Train {
         }   
     }
     
+    
+    
     private void connectCoach(){
         for (Integer coachIndex = 1; coachIndex <= Constants.COACH_BY_TRAIN; coachIndex++){
             CoachNode coach = new CoachNode();
