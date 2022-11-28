@@ -12,8 +12,8 @@ public class CoachNode {
     private Coach info;
     private CoachNode link; 
     
-    public CoachNode(){
-        this.info = new Coach();
+    public CoachNode(Integer path){
+        this.info = new Coach(path);
         this.link = null;
     }
 
