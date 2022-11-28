@@ -14,7 +14,7 @@ import java.util.Date;
 public class Main {
 
     public static void main(String[] args) {
-        
+     /**   
         PassengerStack stack = new PassengerStack();
         PassengerNode node1 = new PassengerNode(5, Constants.PATH_SAN_JOSE_CARTAGO);
         PassengerNode node2 = new PassengerNode(28, Constants.PATH_SAN_JOSE_CARTAGO);
@@ -40,16 +40,19 @@ public class Main {
             
             temp = temp.getLink();            
         } 
+        **/
         
-         System.out.println("--------------");
+        System.out.println("--------------");
         System.out.println("Cartago - San José");
         Train trainCartagoSanJose = new Train(Constants.PATH_CARTAGO_SAN_JOSE, 1, new Date());
         trainCartagoSanJose.start();
-        
+        /*
         System.out.println("--------------");
         System.out.println("San José - Cartago");
         
         Train trainSanJoseCartago = new Train(Constants.PATH_SAN_JOSE_CARTAGO, 2, new Date());
         trainSanJoseCartago.start();
+
+        */
     }
 }

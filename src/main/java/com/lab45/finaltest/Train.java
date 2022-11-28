@@ -15,7 +15,18 @@ public class Train {
     private Integer path;
     private Integer day;
     private Date startTime;
+
     private Integer totalPassenger;
+    private Integer totalChildren;
+    private Integer totalCitizen;
+    private Integer totalRegular;
+    private Integer totalYoung;
+
+    private Double totalChildrenCost;
+    private Double totalCitizenCost;
+    private Double totalRegularCost;
+    private Double totalYoungCost;
+    private Double totalCost;
 
     private PathQueue pathQueue;
     private CoachQueue coachQueue;
@@ -24,6 +35,16 @@ public class Train {
     public Train(Integer path, Integer day, Date startTime) {
         this.path = path;
         this.day = day;
+        this.totalPassenger = 0;
+        this.totalChildren = 0;
+        this.totalCitizen = 0;
+        this.totalRegular = 0;
+        this.totalYoung = 0;
+        this.totalChildrenCost = 0.0;
+        this.totalCitizenCost = 0.0;
+        this.totalRegularCost = 0.0;
+        this.totalYoungCost = 0.0;
+        this.totalCost = 0.0;
         this.startTime = startTime;
         this.pathQueue = new PathQueue();
         this.stack = new PassengerStack();
@@ -33,69 +54,149 @@ public class Train {
     public void start() {
 
         this.totalPassenger = 0;
-        
+
         this.connectCoach();
-        
+
         if (this.path.equals(Constants.PATH_CARTAGO_SAN_JOSE)) {
             this.setPathCartagoSanJose();
-        }
-        else {
+        } else {
             this.setPathSanJoseCartago();
         }
-        
+
         StationNode stationTemp = pathQueue.front();
-        
-        while (stationTemp != null){
-            
+
+        while (stationTemp != null) {
+
             System.out.println("Nombre Estación: " + stationTemp.getInfo().getName());
-            
-            CoachNode coachTemp = this.coachQueue.front();
-            
-            stationTemp = stationTemp.getLink();            
-        }   
+            PassengerUtil util = new PassengerUtil();
+
+            Integer passengerOnBoard = 0;
+            while (passengerOnBoard < util.getTotalPassenger()) {
+
+                CoachNode coachTemp = this.coachQueue.front();
+                Integer coachNumber = 1;
+
+                while (coachTemp != null) {
+
+                    if (passengerOnBoard > util.getTotalPassenger()) {
+                        break;
+                    }
+
+                    System.out.println("    Vagón #" + coachNumber);
+
+                    Integer passengerOnBoardTemp = 0;
+
+                    do {
+                        passengerOnBoardTemp = (1 + (int) (Math.random() * (util.getTotalPassenger() - 1)));
+                    } while (passengerOnBoardTemp > Constants.PASSENGER_BY_COACH);
+
+                    Integer passengerWaiting = util.getTotalPassenger() - passengerOnBoard;
+
+                    if (passengerWaiting <= passengerOnBoard) {
+                        passengerOnBoard = passengerOnBoard + passengerWaiting;
+
+                        passengerOnBoardTemp = passengerWaiting;
+                    } else {
+                        passengerOnBoard = passengerOnBoard + passengerOnBoardTemp;
+                    }
+
+                    Integer total = coachTemp.getInfo().passgengerGetOn(passengerOnBoardTemp);
+
+                    if (!total.equals(0)) {
+                        this.totalPassenger += total;
+                        System.out.println("        Ingreso pasajeros: " + total);
+                        System.out.println("        Sentado pasajeros: " + coachTemp.getInfo().getOccupiedSeats());
+                        this.passengerGetOn(total, util.getQuantityChildren(), util.getQuantityRegular(), util.getQuantityCitizen(), util.getQuantityYoung());
+                    }
+
+                    coachNumber++;
+                    coachTemp = coachTemp.getLink();
+                }
+            }
+
+            stationTemp = stationTemp.getLink();
+        }
+
+        System.out.println("Total pasajeros Transportados: " + this.totalPassenger + "(Niños: " + this.totalChildren + " - Joven: " + this.totalYoung + " - Regular: " + this.totalRegular + " - Adulto mayor: " + this.totalCitizen + ")");
+        System.out.println("Total pasajeros Recaudado: " + this.totalCost + "(Niños: " + this.totalChildrenCost + " - Joven: " + this.totalYoungCost + " - Regular: " + this.totalRegularCost + " - Adulto mayor: " + this.totalCitizenCost + ")");
+
     }
-    
-    
-    
-    private void connectCoach(){
-        for (Integer coachIndex = 1; coachIndex <= Constants.COACH_BY_TRAIN; coachIndex++){
+
+    private void connectCoach() {
+        for (Integer coachIndex = 1; coachIndex <= Constants.COACH_BY_TRAIN; coachIndex++) {
             CoachNode coach = new CoachNode();
             this.coachQueue.enqueue(coach);
         }
     }
-    
-     private void passengerGetOn() {
 
-        Integer quantityChildren = (int) (Math.random() * 90);
-        Integer quantityRegular = (int) (Math.random() * 90);
-        Integer quantityCitizen = (int) (Math.random() * 90);
-        Integer quantityYoung = (int) (Math.random() * 90);
+    private void passengerGetOn(Integer total, Integer quantityChildren, Integer quantityRegular, Integer quantityCitizen, Integer quantityYoung) {
+
+        Integer cont = 0;
 
         for (Integer quantity = 0; quantity < quantityChildren; quantity++) {
+
+            if (cont > total) {
+                break;
+            }
+
             Integer age = Constants.CHILDREN_MIN_AGE + (int) (Math.random() * (Constants.CHILDREN_MAX_AGE - Constants.CHILDREN_MIN_AGE));
             PassengerNode passeger = new PassengerNode(age, this.path);
+            this.totalChildren += 1;
+            this.totalChildrenCost += passeger.getInfo().getTicketCost();
+            this.totalCost += this.totalChildrenCost;
             stack.push(passeger);
+
+            cont++;
         }
 
         for (Integer quantity = 0; quantity < quantityRegular; quantity++) {
+            if (cont > total) {
+                break;
+            }
+
             Integer age = Constants.REGULAR_MIN_AGE + (int) (Math.random() * (Constants.REGULAR_MAX_AGE - Constants.REGULAR_MIN_AGE));
             PassengerNode passeger = new PassengerNode(age, this.path);
+            this.totalRegular += 1;
+            this.totalRegularCost += passeger.getInfo().getTicketCost();
+            this.totalCost += this.totalRegularCost;
             stack.push(passeger);
+
+            cont++;
         }
 
         for (Integer quantity = 0; quantity < quantityCitizen; quantity++) {
-            Integer age = Constants.CITIZEN_MIN_AGE + (int)(Math.random() * (Constants.CITIZEN_MIN_AGE - 110));
+            if (cont > total) {
+                break;
+            }
+
+            Integer age = Constants.CITIZEN_MIN_AGE + (int) (Math.random() * (110 - Constants.CITIZEN_MIN_AGE));
+            
+            System.out.println("Edad adulto mayor: " + age);
             PassengerNode passeger = new PassengerNode(age, this.path);
+            this.totalCitizen += 1;
+            this.totalCitizenCost += passeger.getInfo().getTicketCost();
+            this.totalCost += this.totalCitizenCost;
             stack.push(passeger);
+
+            cont++;
         }
 
         for (Integer quantity = 0; quantity < quantityYoung; quantity++) {
-            Integer age = Constants.YOUNG_MIN_AGE + (int)(Math.random() * (Constants.YOUNG_MAX_AGE - Constants.YOUNG_MIN_AGE));
+            if (cont > total) {
+                break;
+            }
+
+            Integer age = Constants.YOUNG_MIN_AGE + (int) (Math.random() * (Constants.YOUNG_MAX_AGE - Constants.YOUNG_MIN_AGE));
             PassengerNode passeger = new PassengerNode(age, this.path);
+            this.totalYoung += 1;
+            this.totalYoungCost += passeger.getInfo().getTicketCost();
+            this.totalCost += this.totalYoungCost;
             stack.push(passeger);
+
+            cont++;
         }
     }
-    
+
     private void setPathSanJoseCartago() {
         StationNode stationOne = new StationNode(Constants.ESTACION_ATLANTICO, Constants.PATH_SAN_JOSE_CARTAGO);
         this.pathQueue.enqueue(stationOne);

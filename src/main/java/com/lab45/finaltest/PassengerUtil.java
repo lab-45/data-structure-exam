@@ -14,12 +14,15 @@ public class PassengerUtil {
     private Integer quantityRegular;
     private Integer quantityCitizen;
     private Integer quantityYoung;
-    
+    private Integer totalPassenger;
+
     public PassengerUtil() {
-        this.quantityChildren = (int) (Math.random() * 90);
-        this.quantityRegular = (int) (Math.random() * 90);
-        this.quantityCitizen = (int) (Math.random() * 90);
-        this.quantityYoung = (int) (Math.random() * 90);
+        this.quantityChildren = (int) (Math.random() * 25);
+        this.quantityRegular = (int) (Math.random() * 50);
+        this.quantityCitizen = (int) (Math.random() * 15);
+        this.quantityYoung = (int) (Math.random() * 60);
+
+        this.totalPassenger = this.quantityChildren + this.quantityRegular + this.quantityYoung + this.quantityCitizen;
     }
 
     /**
@@ -76,5 +79,19 @@ public class PassengerUtil {
      */
     public void setQuantityYoung(Integer quantityYoung) {
         this.quantityYoung = quantityYoung;
+    }
+
+    /**
+     * @return the totalPassenger
+     */
+    public Integer getTotalPassenger() {
+        return totalPassenger;
+    }
+
+    /**
+     * @param totalPassenger the totalPassenger to set
+     */
+    public void setTotalPassenger(Integer totalPassenger) {
+        this.totalPassenger = totalPassenger;
     }
 }

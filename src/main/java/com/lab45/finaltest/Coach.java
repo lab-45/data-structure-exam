@@ -16,8 +16,26 @@ public class Coach {
         this.quantyPassenger = 0;
     }
     
-    public void passgengerGetOn(Integer quantity) {
-        this.quantyPassenger = this.quantyPassenger + quantity;
+    public Integer passgengerGetOn(Integer quantity) {
+        Integer temp = this.quantyPassenger + quantity;
+        
+        if (temp <= Constants.PASSENGER_BY_COACH)
+        {
+            this.quantyPassenger = this.quantyPassenger + quantity;
+        }
+        else if (this.quantyPassenger < Constants.PASSENGER_BY_COACH)
+        {
+            Integer diff = Constants.PASSENGER_BY_COACH - this.quantyPassenger;
+            
+            if (quantity < diff){
+                this.quantyPassenger = this.quantyPassenger + quantity;
+            }else{
+                this.quantyPassenger = this.quantyPassenger + diff; 
+                quantity = diff;
+            }           
+        }
+        
+        return quantity;
     }
     
     public void passgengerGetOff(Integer quantity) {
@@ -26,6 +44,10 @@ public class Coach {
     
     public Integer getAvailableSeats(){
         return Constants.PASSENGER_BY_COACH - this.quantyPassenger;
+    }
+    
+     public Integer getOccupiedSeats(){
+        return this.quantyPassenger;
     }
 
 }
