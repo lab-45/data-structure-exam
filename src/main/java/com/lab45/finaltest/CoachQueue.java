@@ -40,4 +40,17 @@ public class CoachQueue {
     public CoachNode front(){
         return this.front;
     }
+    
+    public Integer getAvailableSeats(){
+        CoachNode temp = this.front;
+        Integer availableSeats = 0;
+        
+        while (temp != null){
+            availableSeats += temp.getInfo().getAvailableSeats();
+            
+            temp = temp.getLink();
+        }
+        
+        return availableSeats;
+    }
 }

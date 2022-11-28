@@ -33,7 +33,8 @@ public class Constants {
     public static Integer YOUNG_MAX_AGE = 25;
     public static Integer REGULAR_MIN_AGE = 26;
     public static Integer REGULAR_MAX_AGE = 64;
-    public static Integer CITIZEN_MIN_AGE = 65;    
+    public static Integer CITIZEN_MIN_AGE = 65;
+    public static Integer CITIZEN_MAX_AGE = 110; 
     
     /**
      * Costos de tiquetes por rango de edad y ruta
@@ -64,5 +65,16 @@ public class Constants {
     public static Integer TRES_RIOS = 6;
     public static Integer ESTACION_CARTAGO = 7;
     public static Integer LOS_ANGELES = 8;
+    
+    /**
+     * Días de servicio del tren
+     */
+    public static Integer MONDAY = 1;
+    public static Integer TUESDAY = 2;
+    public static Integer WEDNESDAY = 3;
+    public static Integer THURSDAY = 4;
+    public static Integer FRIDAY = 5;
+    public static Integer SATURDAY = 6;
+    public static Integer SUNDAY = 7;
     
 }
